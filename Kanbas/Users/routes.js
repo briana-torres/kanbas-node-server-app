@@ -93,6 +93,21 @@ export default function UserRoutes(app) {
         await enrollmentsDao.enrollUserInCourse(currentUser._id, newCourse._id);
         res.json(newCourse);
     };
+    const testConnection = async (req, res) => {
+        try {
+            const users = await dao.findAllUsers();
+            res.json({
+                status: "Connected",
+                userCount: users.length,
+                message: "Successfully connected to MongoDB"
+            });
+        } catch (error) {
+            res.status(500).json({
+                status: "Error",
+                message: error.message
+            });
+        }
+    };
     
     app.post("/api/users/current/courses", createCourse);
     app.get("/api/users/:userId/courses", findCoursesForEnrolledUser);
@@ -105,4 +120,5 @@ export default function UserRoutes(app) {
     app.post("/api/users/signin", signin);
     app.post("/api/users/signout", signout);
     app.post("/api/users/profile", profile);
+    app.get("/api/test-connection", testConnection);
 }
