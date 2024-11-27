@@ -11,8 +11,5 @@ export default [
     { "_id": "9", "user": "234", "course": "RS102" },
     { "_id": "9", "user": "234", "course": "RS104" },
     { "_id": "9", "user": "234", "course": "RS106" }
-
-
-
-
+    
 ];
