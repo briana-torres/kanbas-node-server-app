@@ -1,6 +1,7 @@
 import * as dao from "./dao.js";
 import * as courseDao from "../Courses/dao.js";
 import * as enrollmentsDao from "../Enrollments/dao.js";
+import mongoose from "mongoose";
 
 export default function UserRoutes(app) {
     const createUser = async (req, res) => {
@@ -96,15 +97,22 @@ export default function UserRoutes(app) {
     const testConnection = async (req, res) => {
         try {
             const users = await dao.findAllUsers();
+            const dbName = mongoose.connection.name;
+            const collections = await mongoose.connection.db.listCollections().toArray();
+            
             res.json({
                 status: "Connected",
+                databaseName: dbName,
+                collections: collections.map(c => c.name),
                 userCount: users.length,
+                sampleUsers: users.slice(0, 2),
                 message: "Successfully connected to MongoDB"
             });
         } catch (error) {
             res.status(500).json({
                 status: "Error",
-                message: error.message
+                message: error.message,
+                stack: error.stack
             });
         }
     };
