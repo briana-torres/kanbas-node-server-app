@@ -6,7 +6,7 @@ export async function findQuizzesForCourse(courseId) {
     const quizzes = await model.find({ course: courseId });
     let newQuizzes = [];
     for (const quiz of quizzes) {
-        newQuizzes.push(await updateQuiz(quiz._id));
+        newQuizzes.push(await updateQuiz2(quiz._id));
     }
     return newQuizzes;
 }
@@ -15,19 +15,19 @@ export function createQuizForCourse(courseId, quiz) {
     return model.create({ course: courseId, ...quiz });
 }
 
-// export function updateQuiz(quizId, quiz) {
-//     return model.findByIdAndUpdate(quizId, { $set: quiz });
-// }
+export function updateQuiz(quizId, quiz) {
+    return model.findByIdAndUpdate(quizId, { $set: quiz });
+}
 
 export function deleteQuiz(quizId) {
     return model.deleteOne({ _id: quizId });
 }
-export function findQuizById(quizId) {
-    return updateQuiz(quizId);
 
+export function findQuizById(quizId) {
+    return updateQuiz2(quizId);
 }
 
-export async function updateQuiz(quizId) {
+async function updateQuiz2(quizId) {
     const questions = await questionModel.find({ quiz: quizId });
     let totalPoints = 0;
     let totalQuestions = 0;
